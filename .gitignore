@@ -39,3 +39,14 @@ next-env.d.ts
 
 # generated question output
 /scripts/question-gen/output/
+
+# Local agent instructions
+AGENTS.md
+
+# Local agent instructions and tooling
+CLAUDE.md
+.claude/
+.opencode/
+.codex/
+.agents/
+docs/agents/
