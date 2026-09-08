@@ -16,7 +16,7 @@ export async function getQuestionsForSession(
     return getFallbackQuestions(config, difficulty)
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const poolSize = getQuestionPoolSize(config)
   const sortedOperatorSet = [...config.operatorSet].sort() as QuestionSubType[]
@@ -44,7 +44,7 @@ export async function createSession(
   finalTime?: number,
   difficulty: string = "Easy"
 ): Promise<string> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const {
     data: { user }
@@ -101,7 +101,7 @@ export async function saveSessionAnswers(
 ): Promise<void> {
   if (sessionId === "mock-session-id") return
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const rows = answers.map((a) => ({
     session_id: sessionId,
@@ -120,7 +120,7 @@ export async function saveSessionAnswers(
 }
 
 async function updateSessionPercentile(sessionId: string): Promise<void> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: percentile, error } = await supabase.rpc("calculate_session_percentile", {
     p_session_id: sessionId
@@ -135,7 +135,7 @@ async function updateSessionPercentile(sessionId: string): Promise<void> {
 }
 
 export async function getUserSessions(): Promise<any[]> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const {
     data: { user }

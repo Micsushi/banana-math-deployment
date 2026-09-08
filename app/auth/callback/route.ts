@@ -28,7 +28,7 @@ export async function GET(request: Request) {
   const baseUrl = requestUrl.origin
 
   if (code) {
-    const supabase = createClient()
+    const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (error) {
       return NextResponse.redirect(
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
     return NextResponse.redirect(`${baseUrl}${next}`)
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user }
   } = await supabase.auth.getUser()

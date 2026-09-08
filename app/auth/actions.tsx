@@ -45,7 +45,7 @@ export async function signIn(formData: FormData) {
     email = user.email
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.auth.signInWithPassword({
     email,
@@ -64,7 +64,7 @@ export async function signIn(formData: FormData) {
 }
 
 export async function signUp(formData: FormData) {
-  const origin = headers().get("origin")
+  const origin = (await headers()).get("origin")
   const email = formData.get("email") as string
   const password = formData.get("password") as string
   const username = String(formData.get("username") ?? "").trim()
@@ -83,7 +83,7 @@ export async function signUp(formData: FormData) {
     return redirect("/login?message=Username is already taken.")
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: existingProfile } = await supabase
     .from("profiles")
@@ -115,13 +115,13 @@ export async function signUp(formData: FormData) {
 }
 
 export async function requestPasswordReset(formData: FormData) {
-  const origin = headers().get("origin")
+  const origin = (await headers()).get("origin")
   const email = formData.get("email") as string
   if (!email) {
     return redirect("/login?message=Enter your email to reset your password.")
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?next=/auth/reset-password`
@@ -141,7 +141,7 @@ export async function updatePassword(formData: FormData) {
     return redirect("/auth/reset-password?message=Enter a new password.")
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { error } = await supabase.auth.updateUser({
     password
@@ -165,8 +165,8 @@ export async function signInWithGoogle() {
     return redirect("/login?message=Google Sign In is not available.")
   }
 
-  const origin = headers().get("origin")
-  const supabase = createClient()
+  const origin = (await headers()).get("origin")
+  const supabase = await createClient()
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

@@ -7,11 +7,12 @@ const handleUpdatePassword = async (formData: FormData): Promise<void> => {
   await updatePassword(formData)
 }
 
-export default function ResetPasswordPage({
+export default async function ResetPasswordPage({
   searchParams
 }: {
-  searchParams: { message?: string }
+  searchParams: Promise<{ message?: string }>
 }) {
+  const resolvedSearchParams = await searchParams
   return (
     <div className="flex-1 flex flex-col w-full items-center justify-center relative">
       <BackButton />
@@ -50,9 +51,9 @@ export default function ResetPasswordPage({
         </form>
       </div>
 
-      {searchParams?.message && (
+      {resolvedSearchParams?.message && (
         <p className="mt-4 p-4 border border-[#2C2920] bg-[#17150F] text-[#EDE6DA] text-sm text-center rounded-sm">
-          {searchParams.message}
+          {resolvedSearchParams.message}
         </p>
       )}
     </div>

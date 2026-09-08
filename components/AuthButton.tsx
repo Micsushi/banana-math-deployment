@@ -7,7 +7,7 @@ const TEXT_CLASS =
   "text-[#EDE6DA] hover:text-btn-background hover:bg-btn-background/[0.05] transition-all duration-200 text-2xl font-bold px-8 py-3 rounded-md"
 
 export default async function AuthButton() {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const {
     data: { user }
@@ -21,7 +21,7 @@ export default async function AuthButton() {
   const signOut = async () => {
     "use server"
 
-    const supabase = createClient()
+    const supabase = await createClient()
     await supabase.auth.signOut()
     return redirect("/")
   }

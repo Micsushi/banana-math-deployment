@@ -11,14 +11,15 @@ import { OPERATOR_PRESETS } from "@/lib/types/database"
 export default async function AttemptHistory({
   searchParams
 }: {
-  searchParams: { [key: string]: string | undefined }
+  searchParams: Promise<{ [key: string]: string | undefined }>
 }) {
-  const supabase = createClient()
-  const modeFilter = searchParams.mode
-  const diffFilter = searchParams.difficulty
-  const durationFilter = searchParams.duration
-  const questionsFilter = searchParams.questions
-  const operatorFilter = searchParams.operators || "all"
+  const resolvedSearchParams = await searchParams
+  const supabase = await createClient()
+  const modeFilter = resolvedSearchParams.mode
+  const diffFilter = resolvedSearchParams.difficulty
+  const durationFilter = resolvedSearchParams.duration
+  const questionsFilter = resolvedSearchParams.questions
+  const operatorFilter = resolvedSearchParams.operators || "all"
 
   const {
     data: { user },
@@ -30,7 +31,7 @@ export default async function AttemptHistory({
     return redirect("/login")
   }
 
-  const timeframeFilter = searchParams.timeframe
+  const timeframeFilter = resolvedSearchParams.timeframe
 
   let query = supabase
     .from("sessions")
@@ -173,7 +174,7 @@ export default async function AttemptHistory({
       style={{ height: "calc(100vh - 115px)" }}
     >
       <div className="w-full shrink-0">
-        <FilterBar options={filterOptions} currentParams={searchParams} />
+        <FilterBar options={filterOptions} currentParams={resolvedSearchParams} />
       </div>
 
       <div className="flex-1 overflow-auto rounded-md border border-[#2C2920] bg-[#17150F] scrollbar-thin scrollbar-thumb-[#2C2920] scrollbar-track-transparent mt-4 mb-24 relative">

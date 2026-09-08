@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server"
 
 export async function updateDisplayName(formData: FormData) {
   const displayName = String(formData.get("display_name") ?? "").trim()
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user }
   } = await supabase.auth.getUser()
@@ -36,7 +36,7 @@ export async function updateProfilePassword(formData: FormData) {
     return redirect("/protected?message=Enter a new password.")
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user }
   } = await supabase.auth.getUser()

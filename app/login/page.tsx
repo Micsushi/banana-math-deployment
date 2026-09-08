@@ -77,7 +77,12 @@ const handlePasswordReset = async (formData: FormData): Promise<void> => {
   await requestPasswordReset(formData)
 }
 
-export default function LoginPage({ searchParams }: { searchParams: { message: string } }) {
+export default async function LoginPage({
+  searchParams
+}: {
+  searchParams: Promise<{ message: string }>
+}) {
+  const resolvedSearchParams = await searchParams
   const isGoogleAuthEnabled =
     process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH === "true" ||
     (process.env.NEXT_PUBLIC_SUPABASE_URL?.includes("supabase.co") &&
@@ -198,9 +203,9 @@ export default function LoginPage({ searchParams }: { searchParams: { message: s
         </div>
       </div>
 
-      {searchParams?.message && (
+      {resolvedSearchParams?.message && (
         <p className="mt-4 p-4 border border-[#2C2920] bg-[#17150F] text-[#EDE6DA] text-sm text-center rounded-sm">
-          {searchParams.message}
+          {resolvedSearchParams.message}
         </p>
       )}
     </div>

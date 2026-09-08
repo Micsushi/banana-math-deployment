@@ -26,7 +26,7 @@ export async function completeGoogleUsernameSetup(formData: FormData) {
     return redirect("/auth/setup-username?message=Username is not allowed.")
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const {
     data: { user }
   } = await supabase.auth.getUser()

@@ -25,13 +25,13 @@ import { DEFAULT_MOCK_SESSIONS } from "./mock-data"
  *  Mode 4 — Production (deployed, same as mode 3 but in Vercel/hosting env)
  */
 
-export const createClient = () => {
+export const createClient = async () => {
   const MOCK_DB = process.env.NEXT_PUBLIC_MOCK_DB === "true"
   const MOCK_AUTH = process.env.NEXT_PUBLIC_MOCK_AUTH === "true"
   const HAS_DB =
     !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
 
   const isMockSessionActive = () => {
     try {

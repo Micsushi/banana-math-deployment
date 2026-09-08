@@ -7,9 +7,10 @@ import { updateDisplayName, updateProfilePassword } from "./actions"
 export default async function ProtectedPage({
   searchParams
 }: {
-  searchParams?: { message?: string }
+  searchParams?: Promise<{ message?: string }>
 }) {
-  const supabase = createClient()
+  const resolvedSearchParams = await searchParams
+  const supabase = await createClient()
 
   const {
     data: { user }
@@ -70,9 +71,9 @@ export default async function ProtectedPage({
         <div className="w-full space-y-6">
           <h3 className="text-2xl font-bold text-[#EDE6DA]">Account Settings</h3>
 
-          {searchParams?.message && (
+          {resolvedSearchParams?.message && (
             <p className="max-w-2xl p-4 border border-[#2C2920] bg-[#17150F] text-[#EDE6DA] text-sm rounded-sm">
-              {searchParams.message}
+              {resolvedSearchParams.message}
             </p>
           )}
 

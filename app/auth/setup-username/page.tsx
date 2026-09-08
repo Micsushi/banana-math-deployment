@@ -3,11 +3,12 @@ import { PasswordRequirementField } from "@/components/PasswordRequirementField"
 
 import { completeGoogleUsernameSetup } from "./actions"
 
-export default function SetupUsernamePage({
+export default async function SetupUsernamePage({
   searchParams
 }: {
-  searchParams: { message?: string }
+  searchParams: Promise<{ message?: string }>
 }) {
+  const resolvedSearchParams = await searchParams
   return (
     <div className="flex-1 flex flex-col w-full items-center justify-center font-['Inter']">
       <div className="bg-[#17150F] border border-[#2C2920] p-8 rounded-md w-full max-w-md">
@@ -42,9 +43,9 @@ export default function SetupUsernamePage({
         </form>
       </div>
 
-      {searchParams?.message && (
+      {resolvedSearchParams?.message && (
         <p className="mt-4 p-4 border border-[#2C2920] bg-[#17150F] text-[#EDE6DA] text-sm text-center rounded-sm">
-          {searchParams.message}
+          {resolvedSearchParams.message}
         </p>
       )}
     </div>
